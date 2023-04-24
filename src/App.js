@@ -4,12 +4,13 @@ import Textform from './components/Textform';
 import About from './components/About'
 import { useState } from 'react'; 
 import Alert from './components/Alert';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Contact from './components/Contact';
 
 function App() {
   let [mode,setMode]=useState('light');
   let [alert,setAlert]=useState(null);
+  let location =useLocation();
   let showAlerts=(type,msg)=>{
     setAlert({type:type,message:msg});
     setTimeout(()=>{
@@ -17,12 +18,17 @@ function App() {
      },1500);
   }
   let toggleMode=()=>{
-    let textarea=document.getElementById('mybox');
+    console.log(location.pathname);
+    let textarea='';
+    if(location.pathname=='/home'||location.pathname=='/'){
+    textarea=document.getElementById('mybox');}
+
     if(mode==='light'){
       setMode('dark');
       document.body.style.backgroundColor='#02032f';
-      console.log(textarea);
-      textarea.style.backgroundColor= '#3a3d4e';
+      if(location.pathname=='/home'||location.pathname=='/'){
+      textarea.style.backgroundColor= '#3a3d4e';}
+
       showAlerts('success','Dark mode enabled');
       document.title='TextUtils- Dark Mode';
       
@@ -30,11 +36,13 @@ function App() {
   else{
     setMode('light');
     document.body.style.backgroundColor='white';
-    textarea.style.backgroundColor='white';
+    if(location.pathname=='/home'||location.pathname=='/'){
+    textarea.style.backgroundColor='white';}
     showAlerts('success','Light mode enabled');
     document.title='TextUtils- Light Mode';
     
   }
+
 }
 let enableText = (mode==='light'? 'dark':'light');
   return (
